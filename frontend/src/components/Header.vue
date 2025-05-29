@@ -25,7 +25,7 @@ const onLogout = () => {
 };
 </script>
 <template>
-  <header class="w-[1000px] mx-auto mt-2">
+  <header class="max-w-[1000px] mx-auto px-4 mt-2">
     <HStack class="justify-between">
       <router-link to="/" class="text-2xl font-medium">
         task manager

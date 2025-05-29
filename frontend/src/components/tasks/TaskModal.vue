@@ -83,7 +83,7 @@ async function onDelete() {
     leave-to-class="opacity-0 scale-[1.02]"
   >
     <div
-      class="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm"
+      class="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4"
       @click.self="close"
     >
       <div class="bg-white p-6 rounded-md w-full max-w-md shadow-lg">
@@ -117,29 +117,27 @@ async function onDelete() {
             <option value="completed">Завершена</option>
           </select>
         </div>
-        <div class="flex justify-between gap-3">
+        <div class="flex justify-center gap-3">
           <button
             type="button"
             @click="onDelete()"
-            class="px-4 py-2 bg-red-400 rounded-md text-white hover:bg-red-500 cursor-pointer"
+            class="p-2 bg-red-400 rounded-md text-white hover:bg-red-500 cursor-pointer flex items-center justify-center"
           >
-            Удалить
+            <span class="material-symbols-rounded">delete</span>
           </button>
-          <HStack class="gap-2">
-            <button
-              type="button"
-              @click="close"
-              class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 cursor-pointer"
-            >
-              Отмена
-            </button>
-            <button
-              @click="onSave()"
-              class="px-4 py-2 bg-indigo-400 rounded-md hover:bg-indigo-500 text-white cursor-pointer"
-            >
-              {{ isEdit ? "Сохранить" : "Создать" }}
-            </button>
-          </HStack>
+          <button
+            type="button"
+            @click="close"
+            class="p-2 bg-gray-200 rounded-md hover:bg-gray-300 text-gray-600 cursor-pointer flex items-center justify-center"
+          >
+            <span class="material-symbols-rounded">undo</span>
+          </button>
+          <button
+            @click="onSave()"
+            class="p-2 bg-indigo-400 rounded-md hover:bg-indigo-500 text-white cursor-pointer flex items-center justify-center"
+          >
+            <span class="material-symbols-rounded">check</span>
+          </button>
         </div>
       </div>
     </div>

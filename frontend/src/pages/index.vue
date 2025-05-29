@@ -40,10 +40,10 @@ onMounted(() => {
 </script>
 <template>
   <Header />
-  <VStack class="w-[1000px] mx-auto mt-20 gap-4">
+  <VStack class="max-w-[1000px] mx-auto mt-20 gap-4 px-4">
     <span class="text-3xl">Задачи:</span>
     <TaskFilter @update:filters="(newFilters) => (filters = newFilters)" />
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 mb-10">
       <div v-for="(task, id) in filteredTasks">
         <TaskCard :task="task" />
       </div>
