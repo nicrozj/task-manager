@@ -2,9 +2,11 @@
 
 > Приложение для управления задачами с авторизацией, фильтрацией и модальными окнами
 
-![Task Manager](./screenshot.png)
+![Task Manager](./screenshot_1.png)
+![Task Manager](./screenshot_2.png)
 
 Это полноценное приложение с фронтендом и бэкендом, где пользователь может:
+
 - Создавать, редактировать и удалять задачи
 - Фильтровать задачи по статусу и дате
 - Пользоваться JWT-аутентификацией
@@ -23,15 +25,20 @@
 ## 🚀 Установка и запуск
 
 ### Предварительно:
-- [Docker](https://www.docker.com/) 
-- [Docker Compose](https://docs.docker.com/compose/install/) 
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### Запуск:
+
 ```bash
 docker-compose -f docker-compose.dev.yml up
 ```
+
 ## 🛠 Переменные окружения:
+
 /backend/.env
+
 ```env
 DB_URL=postgresql://admin:password@postgres:5432/db?sslmode=disable
 
@@ -44,8 +51,7 @@ WEB_URL=http://localhost
 ```
 
 /frontend/.env
+
 ```env
 VITE_API_BASE_URL=http://localhost/api
 ```
-
-
