@@ -30,7 +30,7 @@ watch(selectedDate, onFilterChange);
   <HStack class="gap-2">
     <select
       v-model="selectedStatus"
-      class="rounded-md px-2 py-1 bg-neutral-200 text-gray-700 cursor-pointer"
+      class="rounded-md px-2 py-1 bg-neutral-200 text-gray-700 cursor-pointer hover:bg-neutral-300 transition-colors"
     >
       <option value="all">Все</option>
       <option value="new">Новая</option>
@@ -41,7 +41,7 @@ watch(selectedDate, onFilterChange);
     <input
       type="date"
       v-model="selectedDate"
-      class="rounded-md px-2 py-1 bg-neutral-200 text-gray-800 cursor-pointer"
+      class="rounded-md px-2 py-1 bg-neutral-200 text-gray-800 cursor-pointer hover:bg-neutral-300 transition-colors"
     />
 
     <UButton @click="open">Добавить задачу</UButton>

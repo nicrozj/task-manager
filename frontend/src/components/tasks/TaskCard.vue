@@ -34,7 +34,7 @@ function formatDate(isoString: string): string {
 }
 </script>
 <template>
-  <div class="bg-white rounded-lg p-4 transition-shadow">
+  <div class="bg-neutral-200/70 rounded-lg p-4 transition-shadow">
     <div class="flex justify-between items-start">
       <div>
         <h3 class="text-lg font-semibold text-gray-800">
@@ -57,7 +57,7 @@ function formatDate(isoString: string): string {
       }}</span>
       <button
         @click="open(task)"
-        class="text-sm text-blue-400 rounded transition-colors cursor-pointer"
+        class="text-sm text-blue-400 rounded transition-colors cursor-pointer hover:text-blue-600"
       >
         Редактировать
       </button>
