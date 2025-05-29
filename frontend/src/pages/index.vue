@@ -44,7 +44,7 @@ onMounted(() => {
     <UButton @click="open" is-active>Добавить задачу</UButton>
     <span class="text-3xl">Задачи:</span>
     <TaskFilter @update:filters="(newFilters) => (filters = newFilters)" />
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-2 gap-2">
       <div v-for="(task, id) in filteredTasks">
         <TaskCard :task="task" />
       </div>
