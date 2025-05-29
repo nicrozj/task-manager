@@ -46,7 +46,7 @@ function formatDate(isoString: string): string {
       </div>
       <span
         :class="statusStyles[props.task.status]"
-        class="px-2 py-1 rounded-md"
+        class="px-2 py-1 rounded-md text-xs text-nowrap"
         >{{ statusLabels[props.task.status] }}</span
       >
     </div>
