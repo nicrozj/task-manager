@@ -56,10 +56,13 @@ const submitForm = async () => {
   isLoading.value = true;
 
   try {
-    await register({
-      username: registrationData.username,
-      password: registrationData.password,
-    });
+    await register(
+      {
+        username: registrationData.username,
+        password: registrationData.password,
+      },
+      router
+    );
     router.push("/login");
   } catch (error: any) {
     serverError.value =

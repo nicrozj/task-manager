@@ -38,10 +38,13 @@ const submitForm = async () => {
   isLoading.value = true;
 
   try {
-    await login({
-      username: loginData.username,
-      password: loginData.password,
-    });
+    await login(
+      {
+        username: loginData.username,
+        password: loginData.password,
+      },
+      router
+    );
     router.push("/");
   } catch (error: any) {
     serverError.value =

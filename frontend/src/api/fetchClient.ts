@@ -1,6 +1,4 @@
-import { useRouter } from "vue-router";
-
-const router = useRouter();
+import type { Router } from "vue-router";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -13,7 +11,8 @@ type RequestOptions = {
 
 export async function fetchClient<T = any>(
   endpoint: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
+  router: Router
 ): Promise<T> {
   const { method = "GET", body, headers = {}, auth = true } = options;
   let token = localStorage.getItem("access_token");

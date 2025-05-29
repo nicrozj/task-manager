@@ -45,7 +45,7 @@ func (s AuthService) GetUserByID(userID int) (*models.Response, *models.ErrorRes
 	if err != nil {
 		return nil, models.NewErrorResponse(status, err)
 	}
-	return &models.Response{Success: true, Status: status, Data: []*models.User{user}}, nil
+	return &models.Response{Success: true, Status: status, Data: user}, nil
 }
 
 func (s AuthService) LoginUser(body *models.AuthRequest) (*models.TokenResponse, *models.ErrorResponse) {

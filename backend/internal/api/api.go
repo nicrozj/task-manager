@@ -58,6 +58,6 @@ func (s *Server) mountHandlers() {
 		protectedGroup.POST("/auth/logout", authHandlers.LogoutUser)
 		protectedGroup.POST("/auth/refresh", authHandlers.RefreshToken)
 		protectedGroup.DELETE("/users", authHandlers.DeleteUser)
-		protectedGroup.GET("/users/me", authHandlers.GetUserByID)
+		protectedGroup.GET("/auth/me", authHandlers.GetUserByID)
 	}
 }
