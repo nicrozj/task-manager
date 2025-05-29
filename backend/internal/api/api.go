@@ -65,7 +65,7 @@ func (s *Server) mountHandlers() {
 	protectedGroup.Use(jwtMiddleware())
 	{
 		protectedGroup.POST("/auth/logout", authHandlers.LogoutUser)
-		protectedGroup.POST("/tokens/refresh", authHandlers.RefreshToken)
+		protectedGroup.POST("/refresh", authHandlers.RefreshToken)
 		protectedGroup.DELETE("/users", authHandlers.DeleteUser)
 		protectedGroup.GET("/users/me", authHandlers.GetUserByID)
 	}
