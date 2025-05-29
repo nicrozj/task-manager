@@ -5,8 +5,8 @@ import (
 	"backend/internal/handlers"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/rs/cors"
 )
 
 type Server struct {
@@ -28,27 +28,18 @@ func (s *Server) mountMiddlewares() {
 		c.Next()
 	})
 
-	corsMiddleware := cors.New(cors.Options{
-		AllowedOrigins:   []string{config.Envs.WEB_URL},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-		ExposedHeaders:   []string{"Set-Cookie"},
+	s.Engine.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{config.Envs.WEB_URL},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposeHeaders:    []string{"Set-Cookie"},
 		AllowCredentials: true,
-		MaxAge:           300,
-	})
-
-	s.Engine.Use(ginCorsMiddleware(corsMiddleware))
+		MaxAge:           12 * time.Hour,
+	}))
 
 	s.Engine.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
-}
-
-func ginCorsMiddleware(corsMiddleware *cors.Cors) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		corsMiddleware.HandlerFunc(c.Writer, c.Request)
-		c.Next()
-	}
 }
 
 func (s *Server) mountHandlers() {
@@ -65,7 +56,7 @@ func (s *Server) mountHandlers() {
 	protectedGroup.Use(jwtMiddleware())
 	{
 		protectedGroup.POST("/auth/logout", authHandlers.LogoutUser)
-		protectedGroup.POST("/refresh", authHandlers.RefreshToken)
+		protectedGroup.POST("/auth/refresh", authHandlers.RefreshToken)
 		protectedGroup.DELETE("/users", authHandlers.DeleteUser)
 		protectedGroup.GET("/users/me", authHandlers.GetUserByID)
 	}
