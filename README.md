@@ -2,8 +2,8 @@
 
 > Приложение для управления задачами с авторизацией, фильтрацией и модальными окнами
 
-![Task Manager](./screenshot_1.png)
-![Task Manager](./screenshot_2.png)
+![Task Manager](./screenshots/screenshot_1.png)
+![Task Manager](./screenshots/screenshot_2.png)
 
 Это полноценное приложение с фронтендом и бэкендом, где пользователь может:
 
