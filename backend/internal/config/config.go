@@ -9,7 +9,11 @@ type AppConfig struct {
 }
 
 func NewAppConfig() *AppConfig {
+	db, err := NewDBClient()
+	if err != nil {
+		panic("failed to get db client")
+	}
 	return &AppConfig{
-		DB: NewDBClient(),
+		DB: db,
 	}
 }
