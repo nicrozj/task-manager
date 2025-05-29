@@ -55,7 +55,7 @@ function formatDate(isoString: string): string {
       <span>{{ formatDate(props.task.created_at!) }}</span>
       <button
         @click="open(task)"
-        class="text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 transition-colors"
+        class="text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 transition-colors cursor-pointer"
       >
         Редактировать
       </button>

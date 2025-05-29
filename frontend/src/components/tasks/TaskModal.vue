@@ -110,7 +110,7 @@ async function onDelete() {
           <label class="block text-gray-700 mb-1">Статус</label>
           <select
             v-model="localTask.status"
-            class="w-full rounded-md border border-gray-300 px-3 py-2"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 cursor-pointer"
           >
             <option value="new">Новая</option>
             <option value="in-progress">В работе</option>
