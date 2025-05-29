@@ -4,9 +4,7 @@ import VStack from "@/components/stacks/VStack.vue";
 import UInput from "@/components/UInput.vue";
 import { computed, reactive, ref } from "vue";
 import { login } from "@/api/login";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
+import { router } from "@/main";
 
 interface LoginData {
   username: string;
@@ -38,13 +36,10 @@ const submitForm = async () => {
   isLoading.value = true;
 
   try {
-    await login(
-      {
-        username: loginData.username,
-        password: loginData.password,
-      },
-      router
-    );
+    await login({
+      username: loginData.username,
+      password: loginData.password,
+    });
     router.push("/");
   } catch (error: any) {
     serverError.value =
@@ -57,14 +52,14 @@ const submitForm = async () => {
 
 <template>
   <VStack class="h-screen w-full justify-center items-center bg-gray-50">
-    <VStack class="gap-6 p-8 bg-white w-full max-w-md">
+    <VStack class="gap-2 p-8 bg-white w-full max-w-md">
       <VStack class="gap-1 text-center">
         <h1 class="text-3xl text-gray-800">Вход</h1>
         <p class="text-gray-500">Войдите в свой аккаунт</p>
       </VStack>
 
-      <VStack class="gap-5">
-        <VStack class="gap-4">
+      <VStack class="gap-2">
+        <VStack class="gap-2">
           <VStack class="gap-1">
             <UInput
               placeholder="Логин"

@@ -56,13 +56,10 @@ const submitForm = async () => {
   isLoading.value = true;
 
   try {
-    await register(
-      {
-        username: registrationData.username,
-        password: registrationData.password,
-      },
-      router
-    );
+    await register({
+      username: registrationData.username,
+      password: registrationData.password,
+    });
     router.push("/login");
   } catch (error: any) {
     serverError.value =
@@ -75,14 +72,14 @@ const submitForm = async () => {
 
 <template>
   <VStack class="h-screen w-full justify-center items-center bg-gray-50">
-    <VStack class="gap-6 p-8 bg-white w-full max-w-md">
+    <VStack class="gap-2 p-8 bg-white w-full max-w-md">
       <VStack class="gap-1 text-center">
         <h1 class="text-3xl text-gray-800">Регистрация</h1>
         <p class="text-gray-500">Создайте новый аккаунт</p>
       </VStack>
 
-      <VStack class="gap-5">
-        <VStack class="gap-4">
+      <VStack class="gap-2">
+        <VStack class="gap-2">
           <VStack class="gap-1">
             <UInput
               placeholder="Логин"

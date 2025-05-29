@@ -52,10 +52,12 @@ function formatDate(isoString: string): string {
     </div>
 
     <HStack class="mt-4 flex justify-between">
-      <span>{{ formatDate(props.task.created_at!) }}</span>
+      <span class="text-xs text-neutral-500">{{
+        formatDate(props.task.created_at!)
+      }}</span>
       <button
         @click="open(task)"
-        class="text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 transition-colors cursor-pointer"
+        class="text-sm text-blue-400 rounded transition-colors cursor-pointer"
       >
         Редактировать
       </button>

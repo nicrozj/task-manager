@@ -2,6 +2,10 @@
 import { ref, watch } from "vue";
 import VStack from "../stacks/VStack.vue";
 import HStack from "../stacks/HStack.vue";
+import UButton from "../UButton.vue";
+import { useTaskModal } from "@/composables/useModals";
+
+const { open } = useTaskModal();
 
 type status = "all" | "new" | "in-progress" | "completed";
 
@@ -26,7 +30,7 @@ watch(selectedDate, onFilterChange);
   <HStack class="gap-2">
     <select
       v-model="selectedStatus"
-      class="rounded-md px-3 py-2 bg-blue-400 text-white cursor-pointer"
+      class="rounded-md px-2 py-1 bg-neutral-200 text-gray-700 cursor-pointer"
     >
       <option value="all">Все</option>
       <option value="new">Новая</option>
@@ -37,7 +41,9 @@ watch(selectedDate, onFilterChange);
     <input
       type="date"
       v-model="selectedDate"
-      class="rounded-md px-3 py-2 bg-neutral-200 text-gray-800 cursor-pointer"
+      class="rounded-md px-2 py-1 bg-neutral-200 text-gray-800 cursor-pointer"
     />
+
+    <UButton @click="open">Добавить задачу</UButton>
   </HStack>
 </template>

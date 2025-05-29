@@ -41,10 +41,9 @@ onMounted(() => {
 <template>
   <Header />
   <VStack class="w-[1000px] mx-auto mt-20 gap-4">
-    <UButton @click="open" is-active>Добавить задачу</UButton>
     <span class="text-3xl">Задачи:</span>
     <TaskFilter @update:filters="(newFilters) => (filters = newFilters)" />
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-2 gap-12">
       <div v-for="(task, id) in filteredTasks">
         <TaskCard :task="task" />
       </div>

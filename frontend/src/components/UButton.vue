@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const buttonClasses = computed(() => [
-  "px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300",
+  "px-2 py-1 rounded-md transition-colors",
   props.isActive
     ? "bg-blue-400 text-white hover:bg-blue-500"
     : "bg-neutral-200 text-gray-700 hover:bg-neutral-300",
