@@ -11,3 +11,11 @@ type AuthHandlersInterface interface {
 	LoginUser(c *gin.Context)
 	RefreshToken(c *gin.Context)
 }
+
+type TasksHandlersInterface interface {
+	CreateTask(c *gin.Context)
+	GetTaskByID(c *gin.Context)
+	GetTasks(c *gin.Context)
+	UpdateTask(c *gin.Context)
+	DeleteTask(c *gin.Context)
+}

@@ -13,3 +13,11 @@ type AuthRepositoryInterface interface {
 	GenerateTokens(userID int, oldRefreshToken string) (*models.TokenResponse, int, error)
 	getAuthTokens(userID int) (*models.TokenResponse, int, error)
 }
+
+type TasksRepositoryInterface interface {
+	CreateTask(task *models.Task) (int, int, error)
+	GetTaskByID(taskID int, userID int) (*models.Task, int, error)
+	GetTasks(userID int) ([]*models.Task, int, error)
+	UpdateTask(task *models.Task) (int, error)
+	DeleteTask(taskID int, userID int) (int, error)
+}

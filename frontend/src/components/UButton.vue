@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 const buttonClasses = computed(() => [
   "px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300",
   props.isActive
-    ? "bg-blue-500 text-white hover:bg-blue-600"
+    ? "bg-blue-400 text-white hover:bg-blue-500"
     : "bg-neutral-200 text-gray-700 hover:bg-neutral-300",
   props.isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
 ]);

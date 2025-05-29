@@ -12,3 +12,11 @@ type AuthServiceInterface interface {
 	LoginUser(body *models.AuthRequest) (*models.TokenResponse, *models.ErrorResponse)
 	GenerateTokens(userID int, oldRefreshToken string) (*models.TokenResponse, *models.ErrorResponse)
 }
+
+type TasksServiceInterface interface {
+	CreateTask(taskRequest *models.TaskRequest, userID int) (*models.Response, *models.ErrorResponse)
+	GetTaskByID(taskID int, userID int) (*models.Response, *models.ErrorResponse)
+	GetTasks(userID int) (*models.Response, *models.ErrorResponse)
+	UpdateTask(taskRequest *models.TaskRequest, userID int, taskID int) (*models.Response, *models.ErrorResponse)
+	DeleteTask(taskID int, userID int) (*models.Response, *models.ErrorResponse)
+}

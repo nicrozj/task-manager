@@ -44,6 +44,7 @@ func (s *Server) mountMiddlewares() {
 
 func (s *Server) mountHandlers() {
 	authHandlers := handlers.NewAuthHandlers()
+	tasksHandlers := handlers.NewTasksHandlers()
 
 	authGroup := s.Engine.Group("/auth")
 	{
@@ -52,12 +53,22 @@ func (s *Server) mountHandlers() {
 		authGroup.POST("/registration", authHandlers.CreateUser)
 	}
 
-	protectedGroup := s.Engine.Group("/")
+	protectedGroup := s.Engine.Group("/auth")
 	protectedGroup.Use(jwtMiddleware())
 	{
-		protectedGroup.POST("/auth/logout", authHandlers.LogoutUser)
-		protectedGroup.POST("/auth/refresh", authHandlers.RefreshToken)
+		protectedGroup.POST("/logout", authHandlers.LogoutUser)
+		protectedGroup.POST("/refresh", authHandlers.RefreshToken)
 		protectedGroup.DELETE("/users", authHandlers.DeleteUser)
-		protectedGroup.GET("/auth/me", authHandlers.GetUserByID)
+		protectedGroup.GET("/me", authHandlers.GetUserByID)
+	}
+
+	tasksGroup := s.Engine.Group("/tasks")
+	tasksGroup.Use(jwtMiddleware())
+	{
+		tasksGroup.POST("", tasksHandlers.CreateTask)
+		tasksGroup.GET("/:id", tasksHandlers.GetTaskByID)
+		tasksGroup.GET("", tasksHandlers.GetTasks)
+		tasksGroup.PUT("/:id", tasksHandlers.UpdateTask)
+		tasksGroup.DELETE("/:id", tasksHandlers.DeleteTask)
 	}
 }

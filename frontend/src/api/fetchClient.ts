@@ -1,6 +1,15 @@
 import type { Router } from "vue-router";
+import { router } from "@/main";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+interface RefreshTokenResponse {
+  success: boolean;
+  status: number;
+  data: {
+    access_token: string;
+  };
+}
 
 type RequestOptions = {
   method?: string;
@@ -11,8 +20,7 @@ type RequestOptions = {
 
 export async function fetchClient<T = any>(
   endpoint: string,
-  options: RequestOptions = {},
-  router: Router
+  options: RequestOptions = {}
 ): Promise<T> {
   const { method = "GET", body, headers = {}, auth = true } = options;
   let token = localStorage.getItem("access_token");
@@ -35,14 +43,10 @@ export async function fetchClient<T = any>(
   let response = await makeRequest(token);
 
   if (response.status === 401 && auth) {
-    const newToken = await refreshAccessToken();
+    const refreshTokenResponse = await refreshAccessToken();
 
-    if (newToken) {
-      token = newToken;
-      response = await makeRequest(token);
-    } else {
-      router.push("/login");
-      throw new Error("Unauthorized — please log in again");
+    if (!refreshTokenResponse?.data.access_token) {
+      throw new Error("Access token not found");
     }
   }
 
@@ -56,19 +60,30 @@ export async function fetchClient<T = any>(
   return response.json();
 }
 
-async function refreshAccessToken(): Promise<string | null> {
+async function refreshAccessToken(): Promise<RefreshTokenResponse | null> {
   try {
     const response = await fetch(`${BASE_URL}/auth/refresh`, {
       method: "POST",
       credentials: "include",
     });
 
+    console.log(response);
+
     if (!response.ok) return null;
 
     const data = await response.json();
+
     localStorage.setItem("access_token", data.access_token);
-    return data.access_token;
+
+    return {
+      success: true,
+      status: 200,
+      data: {
+        access_token: data.access_token,
+      },
+    };
   } catch (error) {
+    console.error("Failed to refresh token:", error);
     return null;
   }
 }

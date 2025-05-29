@@ -99,6 +99,7 @@ func (h AuthHandlers) LoginUser(c *gin.Context) {
 
 func (h AuthHandlers) RefreshToken(c *gin.Context) {
 	cookie, err := c.Cookie("refresh_token")
+	fmt.Println("cookie:", cookie)
 	if err != nil || cookie == "" {
 		c.JSON(http.StatusUnauthorized, models.NewErrorResponse(http.StatusUnauthorized, fmt.Errorf("please login again")))
 	}
