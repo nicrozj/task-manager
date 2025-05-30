@@ -98,18 +98,39 @@ func (h AuthHandlers) LoginUser(c *gin.Context) {
 }
 
 func (h AuthHandlers) RefreshToken(c *gin.Context) {
-	cookie, err := c.Cookie("refresh_token")
-	fmt.Println("cookie:", cookie)
-	if err != nil || cookie == "" {
+	refreshToken, err := c.Cookie("refresh_token")
+	if err != nil || refreshToken == "" {
 		c.JSON(http.StatusUnauthorized, models.NewErrorResponse(http.StatusUnauthorized, fmt.Errorf("please login again")))
 	}
 
-	claims, _ := c.Get("claims")
-	userID := int(claims.(jwt.MapClaims)["user_id"].(float64))
-	tokensResponse, er := h.svc.GenerateTokens(userID, cookie)
+	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(config.Envs.JWT_SECRET_KEY), nil
+	})
 
+	if err != nil || !token.Valid {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, models.NewErrorResponse(http.StatusUnauthorized, fmt.Errorf("invalid refresh token")))
+		return
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || claims == nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, models.NewErrorResponse(http.StatusUnauthorized, fmt.Errorf("invalid token claims")))
+		return
+	}
+
+	userIDFloat, ok := claims["user_id"].(float64)
+	if !ok {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, models.NewErrorResponse(http.StatusUnauthorized, fmt.Errorf("invalid user_id in token")))
+		return
+	}
+	userID := int(userIDFloat)
+
+	tokensResponse, er := h.svc.GenerateTokens(userID, refreshToken)
 	if er != nil {
-		c.JSON(er.Status, er)
+		c.AbortWithStatusJSON(er.Status, er)
 		return
 	}
 

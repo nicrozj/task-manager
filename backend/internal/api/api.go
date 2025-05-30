@@ -51,13 +51,13 @@ func (s *Server) mountHandlers() {
 		authGroup.GET("/greet", authHandlers.Greet)
 		authGroup.POST("/login", authHandlers.LoginUser)
 		authGroup.POST("/registration", authHandlers.CreateUser)
+		authGroup.POST("/refresh", authHandlers.RefreshToken)
 	}
 
 	protectedGroup := s.Engine.Group("/auth")
 	protectedGroup.Use(jwtMiddleware())
 	{
 		protectedGroup.POST("/logout", authHandlers.LogoutUser)
-		protectedGroup.POST("/refresh", authHandlers.RefreshToken)
 		protectedGroup.DELETE("/users", authHandlers.DeleteUser)
 		protectedGroup.GET("/me", authHandlers.GetUserByID)
 	}

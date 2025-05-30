@@ -25,6 +25,8 @@ export async function fetchClient<T = any>(
   const { method = "GET", body, headers = {}, auth = true } = options;
   let token = localStorage.getItem("access_token");
 
+  let isRefreshing = false;
+
   async function makeRequest(currentToken: string | null): Promise<Response> {
     return fetch(`${BASE_URL}${endpoint}`, {
       method,
@@ -43,10 +45,29 @@ export async function fetchClient<T = any>(
   let response = await makeRequest(token);
 
   if (response.status === 401 && auth) {
-    const refreshTokenResponse = await refreshAccessToken();
+    if (!isRefreshing) {
+      isRefreshing = true;
 
-    if (!refreshTokenResponse?.data.access_token) {
-      throw new Error("Access token not found");
+      try {
+        const refreshTokenResponse = await refreshAccessToken();
+
+        if (!refreshTokenResponse?.data.access_token) {
+          throw new Error("Access token not found");
+        }
+
+        const newAccessToken = refreshTokenResponse.data.access_token;
+        localStorage.setItem("access_token", newAccessToken);
+
+        response = await makeRequest(newAccessToken);
+      } catch (error) {
+        localStorage.removeItem("access_token");
+        router.push("/login");
+        throw new Error("Session expired");
+      } finally {
+        isRefreshing = false;
+      }
+    } else {
+      throw new Error("Token refresh in progress");
     }
   }
 
@@ -61,29 +82,8 @@ export async function fetchClient<T = any>(
 }
 
 async function refreshAccessToken(): Promise<RefreshTokenResponse | null> {
-  try {
-    const response = await fetch(`${BASE_URL}/auth/refresh`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    console.log(response);
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
-
-    localStorage.setItem("access_token", data.access_token);
-
-    return {
-      success: true,
-      status: 200,
-      data: {
-        access_token: data.access_token,
-      },
-    };
-  } catch (error) {
-    console.error("Failed to refresh token:", error);
-    return null;
-  }
+  return await fetchClient("/auth/refresh", {
+    method: "POST",
+    auth: true,
+  });
 }

@@ -109,13 +109,13 @@ func (r AuthRepo) GenerateTokens(userID int, oldRefreshToken string) (*models.To
 	err := r.db.QueryRow(query, userID).Scan(&dbRefreshToken)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, http.StatusUnauthorized, fmt.Errorf("please login again")
+			return nil, http.StatusUnauthorized, fmt.Errorf("please login again: %s", err)
 		}
-		return nil, http.StatusInternalServerError, fmt.Errorf("please login again")
+		return nil, http.StatusInternalServerError, fmt.Errorf("please login again: %s", err)
 	}
 
 	if dbRefreshToken != oldRefreshToken {
-		return nil, http.StatusUnauthorized, fmt.Errorf("invalid token, please login again")
+		return nil, http.StatusUnauthorized, fmt.Errorf("invalid token, please login again: %s", err)
 	}
 
 	return r.getAuthTokens(userID)
