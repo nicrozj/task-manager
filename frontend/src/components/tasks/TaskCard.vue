@@ -35,7 +35,7 @@ function formatDate(isoString: string): string {
 </script>
 <template>
   <div
-    class="bg-neutral-200/70 rounded-lg p-4 transition-shadow dark:bg-slate-800"
+    class="bg-neutral-200/70 rounded-lg p-4 transition-all dark:bg-slate-800"
   >
     <div class="flex justify-between items-start">
       <div>

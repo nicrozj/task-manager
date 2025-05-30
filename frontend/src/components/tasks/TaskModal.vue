@@ -101,7 +101,7 @@ async function onDelete() {
           <input
             v-model="localTask.title"
             required
-            class="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-slate-700 dark:focus:outline-none"
+            class="w-full rounded-md border bg-neutral-200 border-neutral-300 px-3 py-2 dark:bg-transparent dark:border-slate-700 dark:focus:outline-none"
           />
         </div>
         <div class="mb-4">
@@ -111,14 +111,14 @@ async function onDelete() {
           <textarea
             v-model="localTask.description"
             required
-            class="w-full rounded-md border resize-none h-48 border-gray-300 px-3 py-2 dark:border-slate-700 dark:focus:outline-none"
+            class="w-full rounded-md border resize-none h-48 bg-neutral-200 border-neutral-300 px-3 py-2 dark:bg-transparent dark:border-slate-700 dark:focus:outline-none"
           ></textarea>
         </div>
         <div class="mb-6">
           <label class="block text-gray-700 mb-1 dark:text-white">Статус</label>
           <select
             v-model="localTask.status"
-            class="w-full rounded-md border border-gray-300 px-3 py-2 cursor-pointer dark:border-slate-700 dark:focus:outline-none"
+            class="w-full rounded-md border bg-neutral-200 border-neutral-300 px-3 py-2 cursor-pointer dark:bg-transparent dark:border-slate-700 dark:focus:outline-none"
           >
             <option value="new">Новая</option>
             <option value="in-progress">В работе</option>
