@@ -49,5 +49,5 @@ onMounted(() => {
       </div>
     </div>
   </VStack>
-  <TaskModal v-if="isOpen" />
+  <TaskModal v-show="isOpen" />
 </template>

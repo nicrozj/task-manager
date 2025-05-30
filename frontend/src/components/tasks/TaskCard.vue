@@ -34,13 +34,15 @@ function formatDate(isoString: string): string {
 }
 </script>
 <template>
-  <div class="bg-neutral-200/70 rounded-lg p-4 transition-shadow">
+  <div
+    class="bg-neutral-200/70 rounded-lg p-4 transition-shadow dark:bg-slate-800"
+  >
     <div class="flex justify-between items-start">
       <div>
-        <h3 class="text-lg font-semibold text-gray-800">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
           {{ props.task?.title }}
         </h3>
-        <p class="mt-1 text-sm text-gray-600 line-clamp-6">
+        <p class="mt-1 text-sm text-gray-600 line-clamp-6 dark:text-slate-400">
           {{ props.task.description }}
         </p>
       </div>
@@ -52,7 +54,7 @@ function formatDate(isoString: string): string {
     </div>
 
     <HStack class="mt-4 flex justify-between">
-      <span class="text-xs text-neutral-500">{{
+      <span class="text-xs text-neutral-500 dark:text-slate-500">{{
         formatDate(props.task.created_at!)
       }}</span>
       <button

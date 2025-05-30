@@ -5,6 +5,9 @@ import { useRouter } from "vue-router";
 import HStack from "./stacks/HStack.vue";
 import UButton from "./UButton.vue";
 import { useTasks } from "@/composables/useTasks";
+import { useTheme } from "@/composables/useTheme";
+
+const { currentTheme, setTheme, isDark, toggleTheme } = useTheme();
 
 const { tasks } = useTasks();
 const router = useRouter();
@@ -30,7 +33,12 @@ const onLogout = () => {
       <router-link to="/" class="text-2xl font-medium">
         task manager
       </router-link>
-      <HStack class="items-center gap-2">
+      <HStack class="items-center gap-2 justify-center">
+        <button @click="toggleTheme" class="cursor-pointer flex items-center">
+          <span class="material-symbols-rounded">
+            {{ isDark ? "light_mode" : "dark_mode" }}
+          </span>
+        </button>
         <span>{{ username }}</span>
         <UButton @click="onLogout">Выйти</UButton>
       </HStack>

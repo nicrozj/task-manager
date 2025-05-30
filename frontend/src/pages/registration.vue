@@ -71,8 +71,10 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <VStack class="h-screen w-full justify-center items-center bg-gray-50">
-    <VStack class="gap-2 p-8 bg-white w-full max-w-md">
+  <VStack class="h-screen w-full justify-center items-center">
+    <VStack
+      class="gap-2 p-8 w-full max-w-md rounded-md dark:bg-slate-800 dark:text-white"
+    >
       <VStack class="gap-1 text-center">
         <h1 class="text-3xl text-gray-800">Регистрация</h1>
         <p class="text-gray-500">Создайте новый аккаунт</p>
@@ -144,7 +146,7 @@ const submitForm = async () => {
         </UButton>
       </VStack>
 
-      <div class="text-center text-sm text-gray-600 mt-4">
+      <div class="text-center text-sm text-gray-600 mt-4 dark:text-white">
         Уже есть аккаунт?
         <router-link to="/login" class="text-blue-500 hover:underline">
           Войти

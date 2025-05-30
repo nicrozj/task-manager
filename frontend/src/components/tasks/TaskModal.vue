@@ -79,38 +79,46 @@ async function onDelete() {
 </script>
 <template>
   <Transition
+    enter-active-class="transition duration-150 ease-out"
     enter-from-class="opacity-0 scale-[1.03]"
+    leave-active-class="transition duration-50 ease-in"
     leave-to-class="opacity-0 scale-[1.02]"
   >
     <div
       class="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4"
       @click.self="close"
     >
-      <div class="bg-white p-6 rounded-md w-full max-w-md shadow-lg">
-        <h2 class="text-xl font-semibold mb-4">
+      <div
+        class="bg-white p-6 rounded-md w-full max-w-md shadow-lg dark:bg-slate-800"
+      >
+        <h2 class="text-xl font-semibold mb-4 dark:text-white">
           {{ isEdit ? "Редактировать" : "Создать" }} задачу
         </h2>
         <div class="mb-4">
-          <label class="block text-gray-700 mb-1">Заголовок</label>
+          <label class="block text-gray-700 mb-1 dark:text-white"
+            >Заголовок</label
+          >
           <input
             v-model="localTask.title"
             required
-            class="w-full rounded-md border border-gray-300 px-3 py-2"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-slate-700 dark:focus:outline-none"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700 mb-1">Описание</label>
+          <label class="block text-gray-700 mb-1 dark:text-white"
+            >Описание</label
+          >
           <textarea
             v-model="localTask.description"
             required
-            class="w-full rounded-md border border-gray-300 px-3 py-2"
+            class="w-full rounded-md border resize-none h-48 border-gray-300 px-3 py-2 dark:border-slate-700 dark:focus:outline-none"
           ></textarea>
         </div>
         <div class="mb-6">
-          <label class="block text-gray-700 mb-1">Статус</label>
+          <label class="block text-gray-700 mb-1 dark:text-white">Статус</label>
           <select
             v-model="localTask.status"
-            class="w-full rounded-md border border-gray-300 px-3 py-2 cursor-pointer"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 cursor-pointer dark:border-slate-700 dark:focus:outline-none"
           >
             <option value="new">Новая</option>
             <option value="in-progress">В работе</option>

@@ -31,7 +31,7 @@ watch(selectedDate, onFilterChange);
     <UButton class="w-full" @click="open">Добавить задачу</UButton>
     <select
       v-model="selectedStatus"
-      class="w-full rounded-md px-2 py-1 bg-neutral-200 text-gray-700 cursor-pointer hover:bg-neutral-300 transition-colors"
+      class="w-full rounded-md px-2 py-1 bg-neutral-200 text-gray-700 cursor-pointer hover:bg-neutral-300 transition-colors dark:bg-slate-600 dark:text-white dark:hover:bg-slate-700"
     >
       <option value="all">Все</option>
       <option value="new">Новая</option>
@@ -42,7 +42,7 @@ watch(selectedDate, onFilterChange);
     <input
       type="date"
       v-model="selectedDate"
-      class="w-full rounded-md px-2 py-1 bg-neutral-200 text-gray-800 cursor-pointer hover:bg-neutral-300 transition-colors"
+      class="w-full rounded-md px-2 py-1 bg-neutral-200 text-gray-800 cursor-pointer hover:bg-neutral-300 transition-colors dark:bg-slate-600 dark:text-white dark:hover:bg-slate-700"
     />
   </div>
 </template>
