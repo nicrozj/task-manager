@@ -94,7 +94,7 @@ const submitForm = async () => {
 
         <div
           v-if="serverError"
-          class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg"
+          class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg dark:bg-red-900 dark:text-white dark:border-red-600"
         >
           <div class="font-medium">Ошибка входа</div>
           <div class="text-sm mt-1">{{ serverError }}</div>
