@@ -92,7 +92,7 @@ async function onDelete() {
         class="bg-white p-6 rounded-md w-full max-w-md shadow-lg dark:bg-slate-800"
       >
         <h2 class="text-xl font-semibold mb-4 dark:text-white">
-          {{ isEdit ? "Редактировать" : "Создать" }} задачу
+          {{ localTask.id ? "Редактировать" : "Создать" }} задачу
         </h2>
         <div class="mb-4">
           <label class="block text-gray-700 mb-1 dark:text-white"
