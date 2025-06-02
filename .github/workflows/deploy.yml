@@ -55,7 +55,7 @@ jobs:
 
       - name: Copy docker-compose.yml to server
         run: |
-          scp -o StrictHostKeyChecking=no docker-compose.prod.yml ${{ secrets.HOST_USER }}@${{ secrets.HOST_ADDR }}:task-manager
+          scp -o StrictHostKeyChecking=no docker-compose.prod.yml ${{ secrets.HOST_USER }}@${{ secrets.HOST_ADDR }}:~/task-manager
 
       - name: Pull and Start Docker Compose
         run: |
