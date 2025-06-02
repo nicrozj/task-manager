@@ -1,4 +1,4 @@
-:80 {
+task.zhorkinigor.ru {
     handle /api/* {
         reverse_proxy backend
     }
