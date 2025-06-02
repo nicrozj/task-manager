@@ -26,14 +26,8 @@ jobs:
       - name: Create .env file for backend
         run: echo "${{ secrets.ENV_BACKEND }}" > ./backend/.env
 
-      - name: Check .env
-        run: cat ./backend/.env
-
       - name: Create .env file for frontend
         run: echo "${{ secrets.ENV_FRONTEND }}" > ./frontend/.env
-
-      - name: Check .env
-        run: cat ./frontend/.env
 
       - name: Set up Docker Buildx
         run: |

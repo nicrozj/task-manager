@@ -13,7 +13,6 @@ import (
 var migrationFS embed.FS
 
 func NewDBClient() (*sqlx.DB, error) {
-	fmt.Println(Envs.DB_URL)
 	db, err := sqlx.Connect("postgres", Envs.DB_URL)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
