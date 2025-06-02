@@ -1,40 +1,75 @@
+version: "3.8"
+
 services:
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
-    environment:
-      - DB_URL=postgres://user:password@postgres:5432/dbname?sslmode=disable
+    image: ghcr.io/nicrozj/project-backend:latest
+    container_name: project-backend
+    ports:
+      - "5173:5173"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+    image: ghcr.io/nicrozj/project-frontend:latest
+    container_name: project-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
 
   postgres:
-    image: postgres:15
+    image: postgres:latest
+    container_name: project-postgres
     environment:
-      POSTGRES_DB: dbname
-      POSTGRES_USER: user
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - "5430:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data/pgdata
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    command: >
+      postgres -c max_connections=1000
+               -c shared_buffers=256MB
+               -c effective_cache_size=768MB
+               -c maintenance_work_mem=64MB
+               -c checkpoint_completion_target=0.7
+               -c wal_buffers=16MB
+               -c default_statistics_target=100
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
 
   caddy:
-    build:
-      context: ./caddy
+    image: caddy:2-alpine
+    container_name: project-caddy
     ports:
       - "80:80"
       - "443:443"
     volumes:
+      - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile
       - caddy_data:/data
     depends_on:
       - backend
       - frontend
+    restart: unless-stopped
 
 volumes:
   postgres_data:
