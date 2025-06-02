@@ -20,7 +20,10 @@ const registrationData = reactive<RegistrationData>({
   repeatPassword: "",
 });
 
+const isLoginTouched = ref(false);
+const isPasswordTouched = ref(false);
 const isRepeatPasswordTouched = ref(false);
+
 const isLoading = ref(false);
 const serverError = ref<string | null>(null);
 const isSubmitted = ref(false);
@@ -29,8 +32,20 @@ const isPasswordMatch = computed(
   () => registrationData.password === registrationData.repeatPassword
 );
 
-const isPasswordValid = computed(() => registrationData.password.length >= 6);
-const isUsernameValid = computed(() => registrationData.username.length >= 3);
+const usernameInputError = computed(() => {
+  if (registrationData.username.length < 3) {
+    return "Логин должен содержать минимум 3 символа";
+  } else if (registrationData.username.length > 16) {
+    return "Логин не должен быть длиннее 16 символов";
+  }
+});
+const passwordInputError = computed(() => {
+  if (registrationData.password.length < 6) {
+    return "Пароль должен содержать минимум 6 символов";
+  } else if (registrationData.password.length > 16) {
+    return "Пароль не должен быть длиннее 16 символов";
+  }
+});
 
 const shouldShowPasswordError = computed(
   () =>
@@ -44,7 +59,10 @@ const shouldShowValidationErrors = computed(
 );
 
 const isFormValid = computed(
-  () => isUsernameValid.value && isPasswordValid.value && isPasswordMatch.value
+  () =>
+    !usernameInputError.value &&
+    !passwordInputError.value &&
+    isPasswordMatch.value
 );
 
 const submitForm = async () => {
@@ -76,20 +94,20 @@ const submitForm = async () => {
       class="gap-2 p-8 w-full max-w-md rounded-md dark:bg-slate-800 dark:text-white"
     >
       <VStack class="gap-1 text-center">
-        <h1 class="text-3xl text-gray-800">Регистрация</h1>
+        <h1 class="text-3xl text-gray-800 dark:text-white">Регистрация</h1>
         <p class="text-gray-500">Создайте новый аккаунт</p>
       </VStack>
-
       <VStack class="gap-2">
         <VStack class="gap-2">
           <VStack class="gap-1">
             <UInput
               placeholder="Логин"
               v-model="registrationData.username"
-              :hasError="shouldShowValidationErrors && !isUsernameValid"
+              @blur="isLoginTouched = true"
+              :hasError="isLoginTouched && Boolean(usernameInputError)"
             />
             <div
-              v-if="shouldShowValidationErrors && !isUsernameValid"
+              v-if="isLoginTouched && Boolean(usernameInputError)"
               class="text-red-500 text-sm pl-2"
             >
               Логин должен содержать минимум 3 символа
@@ -101,10 +119,11 @@ const submitForm = async () => {
               placeholder="Пароль"
               type="password"
               v-model="registrationData.password"
-              :hasError="shouldShowValidationErrors && !isPasswordValid"
+              @blur="isPasswordTouched = true"
+              :hasError="isPasswordTouched && Boolean(passwordInputError)"
             />
             <div
-              v-if="shouldShowValidationErrors && !isPasswordValid"
+              v-if="isPasswordTouched && Boolean(passwordInputError)"
               class="text-red-500 text-sm pl-2"
             >
               Пароль должен содержать минимум 6 символов
@@ -120,7 +139,7 @@ const submitForm = async () => {
               :hasError="shouldShowPasswordError"
             />
             <div
-              v-if="shouldShowPasswordError"
+              v-if="!isPasswordMatch && isRepeatPasswordTouched"
               class="text-red-500 text-sm pl-2"
             >
               Пароли не совпадают!
@@ -137,7 +156,8 @@ const submitForm = async () => {
         </div>
 
         <UButton
-          :isActive="isFormValid"
+          :is-active="isFormValid"
+          :is-disabled="!isFormValid"
           :loading="isLoading"
           @click="submitForm"
           class="mt-2"

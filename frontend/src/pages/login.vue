@@ -20,11 +20,23 @@ const isLoading = ref(false);
 const serverError = ref<string | null>(null);
 const isSubmitted = ref(false);
 
-const isUsernameValid = computed(() => loginData.username.length >= 3);
-const isPasswordValid = computed(() => loginData.password.length >= 6);
+const usernameInputError = computed(() => {
+  if (loginData.username.length < 3) {
+    return "Логин должен содержать минимум 3 символа";
+  } else if (loginData.username.length > 16) {
+    return "Логин не должен быть длиннее 16 символов";
+  }
+});
+const passwordInputError = computed(() => {
+  if (loginData.password.length < 6) {
+    return "Пароль должен содержать минимум 6 символов";
+  } else if (loginData.password.length > 16) {
+    return "Пароль не должен быть длиннее 16 символов";
+  }
+});
 
 const isFormValid = computed(
-  () => isUsernameValid.value && isPasswordValid.value
+  () => !usernameInputError.value && !passwordInputError.value
 );
 
 const submitForm = async () => {
@@ -59,17 +71,16 @@ const submitForm = async () => {
         <h1 class="text-3xl text-gray-800 dark:text-white">Вход</h1>
         <p class="text-gray-500 dark:text-slate-400">Войдите в свой аккаунт</p>
       </VStack>
-
       <VStack class="gap-2">
         <VStack class="gap-2">
           <VStack class="gap-1">
             <UInput
               placeholder="Логин"
               v-model="loginData.username"
-              :hasError="isSubmitted && !isUsernameValid"
+              :hasError="isSubmitted && Boolean(usernameInputError)"
             />
             <div
-              v-if="isSubmitted && !isUsernameValid"
+              v-if="isSubmitted && usernameInputError"
               class="text-red-500 text-sm pl-2"
             >
               Логин должен содержать минимум 3 символа
@@ -81,10 +92,10 @@ const submitForm = async () => {
               placeholder="Пароль"
               type="password"
               v-model="loginData.password"
-              :hasError="isSubmitted && !isPasswordValid"
+              :hasError="isSubmitted && Boolean(passwordInputError)"
             />
             <div
-              v-if="isSubmitted && !isPasswordValid"
+              v-if="isSubmitted && passwordInputError"
               class="text-red-500 text-sm pl-2"
             >
               Пароль должен содержать минимум 6 символов
@@ -102,6 +113,7 @@ const submitForm = async () => {
 
         <UButton
           :isActive="isFormValid"
+          :is-disabled="!isFormValid"
           :loading="isLoading"
           @click="submitForm"
           class="mt-2"

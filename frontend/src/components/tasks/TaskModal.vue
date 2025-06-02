@@ -127,6 +127,7 @@ async function onDelete() {
         </div>
         <div class="flex justify-center gap-3">
           <button
+            v-if="localTask.id"
             type="button"
             @click="onDelete()"
             class="p-2 bg-red-400 rounded-md text-white hover:bg-red-500 cursor-pointer flex items-center justify-center"

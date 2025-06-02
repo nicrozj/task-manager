@@ -12,7 +12,7 @@ services:
       - postgres
 
   frontend:
-    container_name: task-manager-backend
+    container_name: task-manager-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile

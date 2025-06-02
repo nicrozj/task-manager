@@ -16,7 +16,9 @@ export interface Task {
 export const useTasks = () => {
   async function fetchTasks() {
     const response = await getTasks();
-    tasks.value.push(...response.data);
+    if (response.data) {
+      tasks.value.push(...response.data);
+    }
   }
 
   function updateTaskInList(task: Task) {
