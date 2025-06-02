@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
   proxy:
-    image: ghcr.io/nicrozj/task-frontend:latest
+    image: ghcr.io/nicrozj/task-proxy:latest
     ports:
       - 3000:3000
     restart: unless-stopped
