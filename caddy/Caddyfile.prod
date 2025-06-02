@@ -1,5 +1,6 @@
 http://task.zhorkinigor.ru {
     handle /api/* {
+        uri strip_prefix /api
         reverse_proxy backend:8080
     }
     
