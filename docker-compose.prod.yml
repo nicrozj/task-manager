@@ -1,9 +1,6 @@
-version: "3.8"
-
 services:
   backend:
-    image: ghcr.io/nicrozj/project-backend:latest
-    container_name: project-backend
+    image: ghcr.io/nicrozj/task-backend:latest
     ports:
       - "5173:5173"
     depends_on:
@@ -11,18 +8,14 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  frontend:
-    image: ghcr.io/nicrozj/project-frontend:latest
-    container_name: project-frontend
+  proxy:
+    image: ghcr.io/nicrozj/task-frontend:latest
     ports:
-      - "3000:3000"
-    depends_on:
-      - backend
+      - 3000:3000
     restart: unless-stopped
 
   postgres:
     image: postgres:latest
-    container_name: project-postgres
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
@@ -53,22 +46,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    restart: unless-stopped
-    tty: true
-    stdin_open: true
-
-  caddy:
-    image: caddy:2-alpine
-    container_name: project-caddy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile
-      - caddy_data:/data
-    depends_on:
-      - backend
-      - frontend
     restart: unless-stopped
 
 volumes:
