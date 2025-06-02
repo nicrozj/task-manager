@@ -1,5 +1,4 @@
-task.zhorkinigor.ru {
-    auto_https off
+http://task.zhorkinigor.ru {
     handle /api/* {
         reverse_proxy backend
     }
