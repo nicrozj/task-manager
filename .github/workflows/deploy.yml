@@ -48,6 +48,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
@@ -55,7 +58,7 @@ jobs:
 
       - name: Copy docker-compose.yml to server
         run: |
-          scp -o StrictHostKeyChecking=no docker-compose.prod.yml ${{ secrets.HOST_USER }}@${{ secrets.HOST_ADDR }}:~/task-manager
+          scp -o StrictHostKeyChecking=no docker-compose.prod.yml ${{ secrets.HOST_USER }}@${{ secrets.HOST_ADDR }}:task-manager
 
       - name: Pull and Start Docker Compose
         run: |
