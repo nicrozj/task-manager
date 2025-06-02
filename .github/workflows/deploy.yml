@@ -40,7 +40,7 @@ jobs:
           docker buildx build \
             --tag ghcr.io/nicrozj/task-proxy:latest \
             --push \
-            --file backend/Dockerfile.prod \
+            --file frontend/Dockerfile.prod \
             .
 
   deploy:
