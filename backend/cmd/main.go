@@ -19,7 +19,7 @@ func main() {
 	}
 
 	server := api.NewServer()
-	if err := server.Engine.Run(":8080"); err != nil {
+	if err := server.Engine.Run("0.0.0.0:8080"); err != nil {
 		panic(err)
 	}
 }
