@@ -23,6 +23,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Create .env file for backend
+        run: echo "${{ secrets.ENV_BACKEND }}" > ./backend/.env
+
+      - name: Create .env file for frontend
+        run: echo "${{ secrets.ENV_FRONTEND }}" > ./frontend/.env
+
       - name: Set up Docker Buildx
         run: |
           docker buildx create --use
@@ -55,6 +61,11 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.HOST_KEY }}
+
+      - name: Copy .env file to server
+        run: |
+          echo "${{ secrets.ENV_DB }}" > db.env
+          scp -o StrictHostKeyChecking=no db.env ${{ secrets.HOST_USER }}@${{ secrets.HOST_ADDR }}:task-manager/db.env
 
       - name: Copy docker-compose.yml to server
         run: |
