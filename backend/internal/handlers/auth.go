@@ -29,8 +29,12 @@ func (h AuthHandlers) CreateUser(c *gin.Context) {
 	var body models.AuthRequest
 
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, models.NewErrorResponse(http.StatusBadRequest, fmt.Errorf("please provide valid input")))
+		c.JSON(http.StatusBadRequest, models.NewErrorResponse(http.StatusBadRequest, fmt.Errorf("пожалуйста, введите корректные данные")))
 		return
+	}
+
+	if len(body.Password) < 3 {
+		c.JSON(http.StatusBadRequest, fmt.Errorf("пароль должен содержать минимум 3 символа"))
 	}
 
 	result, err := h.svc.CreateUser(&body)
@@ -83,7 +87,7 @@ func (h AuthHandlers) LoginUser(c *gin.Context) {
 	var body *models.AuthRequest
 
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, models.NewErrorResponse(http.StatusBadRequest, fmt.Errorf("please provide valid input")))
+		c.JSON(http.StatusBadRequest, models.NewErrorResponse(http.StatusBadRequest, fmt.Errorf("введите корректные данные")))
 		return
 	}
 
@@ -100,7 +104,7 @@ func (h AuthHandlers) LoginUser(c *gin.Context) {
 func (h AuthHandlers) RefreshToken(c *gin.Context) {
 	refreshToken, err := c.Cookie("refresh_token")
 	if err != nil || refreshToken == "" {
-		c.JSON(http.StatusUnauthorized, models.NewErrorResponse(http.StatusUnauthorized, fmt.Errorf("please login again")))
+		c.JSON(http.StatusUnauthorized, models.NewErrorResponse(http.StatusUnauthorized, fmt.Errorf("авторизуйтесь еще раз")))
 	}
 
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {

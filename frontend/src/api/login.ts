@@ -8,7 +8,6 @@ export function login(payload: { username: string; password: string }) {
     auth: false,
   }).then((response) => {
     if (response.data.access_token) {
-      console.log(response.data.access_token);
       localStorage.setItem("access_token", response.data.access_token);
     }
     return response;

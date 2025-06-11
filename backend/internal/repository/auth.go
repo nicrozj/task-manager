@@ -30,22 +30,22 @@ func (r AuthRepo) CreateUser(user *models.User) (int, error) {
 	query := "SELECT count(username) FROM users WHERE username = $1"
 	err := r.db.QueryRow(query, user.Username).Scan(&row)
 	if err != nil && err != sql.ErrNoRows {
-		return http.StatusInternalServerError, fmt.Errorf("please try again later")
+		return http.StatusInternalServerError, fmt.Errorf("попробуйте позднее")
 	}
 
 	if row != 0 {
-		return http.StatusBadRequest, fmt.Errorf("username already taken, please use different username")
+		return http.StatusBadRequest, fmt.Errorf("такой логин уже занят")
 	}
 
 	query = "INSERT INTO users(username, password_hash) VALUES($1, $2) RETURNING id"
 	hashPassword, err := getHashPassword(user.PasswordHash)
 	if err != nil {
-		return http.StatusInternalServerError, fmt.Errorf("please try again later")
+		return http.StatusInternalServerError, fmt.Errorf("попробуйте позднее")
 	}
 
 	_, err = r.db.Exec(query, user.Username, string(hashPassword))
 	if err != nil {
-		return http.StatusInternalServerError, fmt.Errorf("please try again later")
+		return http.StatusInternalServerError, fmt.Errorf("попробуйте позднее")
 	}
 
 	return http.StatusOK, nil
@@ -56,7 +56,7 @@ func (r AuthRepo) GetUserByID(userID int) (*models.User, int, error) {
 	query := "SELECT id, username, password_hash FROM users WHERE id = $1"
 	err := r.db.QueryRow(query, userID).Scan(&user.Id, &user.Username, &user.PasswordHash)
 	if err != nil {
-		return nil, http.StatusInternalServerError, fmt.Errorf("please try again later")
+		return nil, http.StatusInternalServerError, fmt.Errorf("попробуйте позднее")
 	}
 
 	return &user, http.StatusOK, nil
@@ -79,14 +79,14 @@ func (r AuthRepo) LoginUser(user *models.User) (*models.TokenResponse, int, erro
 	err := r.db.QueryRow(query, user.Username).Scan(&existUser.Id, &existUser.Username, &existUser.PasswordHash)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, http.StatusBadRequest, fmt.Errorf("please check credentials")
+			return nil, http.StatusBadRequest, fmt.Errorf("аккаунт с таким логином не найден")
 		}
 		return nil, http.StatusBadRequest, err
 	}
 
 	isValid := checkPassword(existUser.PasswordHash, user.PasswordHash)
 	if !isValid {
-		return nil, http.StatusUnauthorized, fmt.Errorf("incorrect password, please try again")
+		return nil, http.StatusUnauthorized, fmt.Errorf("неверный пароль, попробуйте еще раз")
 	}
 
 	return r.getAuthTokens(existUser.Id)
@@ -96,7 +96,7 @@ func (r AuthRepo) LogoutUser(userID int) (int, error) {
 	query := "DELETE FROM refresh_tokens WHERE user_id = $1"
 	_, err := r.db.Exec(query, userID)
 	if err != nil {
-		return http.StatusInternalServerError, fmt.Errorf("please try again later")
+		return http.StatusInternalServerError, fmt.Errorf("попробуйте позднее")
 	}
 	return http.StatusOK, nil
 }
@@ -109,13 +109,13 @@ func (r AuthRepo) GenerateTokens(userID int, oldRefreshToken string) (*models.To
 	err := r.db.QueryRow(query, userID).Scan(&dbRefreshToken)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, http.StatusUnauthorized, fmt.Errorf("please login again: %s", err)
+			return nil, http.StatusUnauthorized, fmt.Errorf("войдите еше раз: %s", err)
 		}
-		return nil, http.StatusInternalServerError, fmt.Errorf("please login again: %s", err)
+		return nil, http.StatusInternalServerError, fmt.Errorf("войдите еше раз: %s", err)
 	}
 
 	if dbRefreshToken != oldRefreshToken {
-		return nil, http.StatusUnauthorized, fmt.Errorf("invalid token, please login again: %s", err)
+		return nil, http.StatusUnauthorized, fmt.Errorf("невалидный токен, войдите еше раз: %s", err)
 	}
 
 	return r.getAuthTokens(userID)
@@ -125,13 +125,13 @@ func (r AuthRepo) getAuthTokens(userID int) (*models.TokenResponse, int, error) 
 	accessTokenExpire := time.Now().Add(time.Duration(config.Envs.HTTP_ACCESS_TOKEN_EXPIRE) * time.Minute).Unix()
 	accessToken, err := getToken(userID, accessTokenExpire)
 	if err != nil {
-		return nil, http.StatusInternalServerError, fmt.Errorf("please try again later")
+		return nil, http.StatusInternalServerError, fmt.Errorf("попробуйте позднее")
 	}
 
 	refreshTokenExpire := time.Now().Add(time.Duration(config.Envs.HTTP_REFRESH_TOKEN_EXPIRE) * time.Minute).Unix()
 	refreshToken, err := getToken(userID, refreshTokenExpire)
 	if err != nil {
-		return nil, http.StatusInternalServerError, fmt.Errorf("please try again later")
+		return nil, http.StatusInternalServerError, fmt.Errorf("попробуйте позднее")
 	}
 
 	query := `

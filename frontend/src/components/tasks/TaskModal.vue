@@ -70,7 +70,6 @@ async function onDelete() {
       deleteTaskInList(localTask.value.id);
       close();
     } catch (err) {
-      alert("Не удалось удалить задачу");
       console.error(err);
     }
   }
